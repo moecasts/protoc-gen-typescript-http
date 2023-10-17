@@ -1,4 +1,4 @@
-module go.einride.tech/protoc-gen-typescript-http
+module github.com/moecasts/protoc-gen-typescript-http
 
 go 1.17
 
@@ -13,3 +13,5 @@ require (
 	github.com/golang/protobuf v1.5.0 // indirect
 	github.com/google/go-cmp v0.5.5 // indirect
 )
+
+retract [v0.0.1, v0.1.0] // inavailable version
