@@ -8,7 +8,7 @@ import (
 	"strconv"
 	"strings"
 
-	"go.einride.tech/protoc-gen-typescript-http/internal/plugin"
+	"github.com/moecasts/protoc-gen-typescript-http/internal/plugin"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/pluginpb"
 )
