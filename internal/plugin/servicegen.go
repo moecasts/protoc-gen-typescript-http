@@ -19,23 +19,71 @@ type serviceGenerator struct {
 
 func (s serviceGenerator) Generate(f *codegen.File) error {
 	s.generateInterface(f)
+
+	s.generateURIInterface(f)
+
+	if err := s.generateURIImpl(f); err != nil {
+		return err
+	}
+
 	if s.genHandler {
 		s.generateHandler(f)
 	}
 	return s.generateClient(f)
 }
 
+func (s serviceGenerator) generateURIInterface(f *codegen.File) {
+	f.P("/** The URIs for ", descriptorTypeName(s.service), " */")
+	f.P("export interface ", serviceURIName(s.service), "<T = unknown> {")
+	rangeMethods(s.service.Methods(), func(method protoreflect.MethodDescriptor) {
+		if !supportedMethod(method) {
+			return
+		}
+		input := typeFromMessage(s.pkg, method.Input())
+
+		f.P(t(1), "/** Get the URI of `", string(method.Name()), "` method */")
+		uriName := methodURIName(string(method.Name()), s.opts.ServiceMethodNaming)
+		f.P(t(1), uriName, "(request: ", input.Reference(), ", options?: T): string;")
+	})
+	f.P("}")
+	f.P()
+}
+
+func (s serviceGenerator) generateURIImpl(f *codegen.File) error {
+	f.P(
+		"export function get",
+		serviceURIName(s.service),
+		"<T = unknown>(",
+		"): ",
+		serviceURIName(s.service),
+		"<T> {",
+	)
+	f.P(t(1), "return {")
+	var methodErr error
+	rangeMethods(s.service.Methods(), func(method protoreflect.MethodDescriptor) {
+		if err := s.generateURIMethod(f, method); err != nil {
+			methodErr = fmt.Errorf("generate method %s: %w", method.Name(), err)
+		}
+	})
+	if methodErr != nil {
+		return methodErr
+	}
+	f.P(t(1), "};")
+	f.P("}")
+	return nil
+}
+
 func (s serviceGenerator) generateInterface(f *codegen.File) {
-	commentGenerator{descriptor: s.service}.generateLeading(f, 0)
+	commentGenerator{opts: s.opts, descriptor: s.service}.generateLeading(f, 0)
 	f.P("export interface ", descriptorTypeName(s.service), "<T = unknown> {")
 	rangeMethods(s.service.Methods(), func(method protoreflect.MethodDescriptor) {
 		if !supportedMethod(method) {
 			return
 		}
-		commentGenerator{descriptor: method}.generateLeading(f, 1)
 		input := typeFromMessage(s.pkg, method.Input())
 		output := typeFromMessage(s.pkg, method.Output())
 
+		commentGenerator{opts: s.opts, descriptor: method}.generateLeading(f, 1)
 		name := methodName(string(method.Name()), s.opts.ServiceMethodNaming)
 		f.P(t(1), name, "(request: ", input.Reference(), ", options?: T): Promise<", output.Reference(), ">;")
 	})
@@ -82,6 +130,7 @@ func (s serviceGenerator) generateClient(f *codegen.File) error {
 		descriptorTypeName(s.service),
 		"<T> {",
 	)
+	f.P(t(1), "const uris = get", serviceURIName(s.service), "<T>();")
 	f.P(t(1), "return {")
 	var methodErr error
 	rangeMethods(s.service.Methods(), func(method protoreflect.MethodDescriptor) {
@@ -107,16 +156,12 @@ func (s serviceGenerator) generateMethod(f *codegen.File, method protoreflect.Me
 	if err != nil {
 		return fmt.Errorf("parse http rule: %w", err)
 	}
+
+	uriName := methodURIName(string(method.Name()), s.opts.ServiceMethodNaming)
 	name := methodName(string(method.Name()), s.opts.ServiceMethodNaming)
 	f.P(t(2), name, "(request, options) { // eslint-disable-line @typescript-eslint/no-unused-vars")
-	s.generateMethodPathValidation(f, method.Input(), rule)
-	s.generateMethodPath(f, method.Input(), rule)
+	f.P(t(3), "const uri = uris.", uriName, "(request, options);")
 	s.generateMethodBody(f, method.Input(), rule)
-	s.generateMethodQuery(f, method.Input(), rule)
-	f.P(t(3), "let uri = path;")
-	f.P(t(3), "if (queryParams.length > 0) {")
-	f.P(t(4), "uri += `?${queryParams.join(\"&\")}`")
-	f.P(t(3), "}")
 	f.P(t(3), "return handler({")
 	f.P(t(4), "path: uri,")
 	f.P(t(4), "method: ", strconv.Quote(rule.Method), ",")
@@ -126,6 +171,31 @@ func (s serviceGenerator) generateMethod(f *codegen.File, method protoreflect.Me
 	f.P(t(4), "service: \"", method.Parent().Name(), "\",")
 	f.P(t(4), "method: \"", method.Name(), "\",")
 	f.P(t(3), "}) as Promise<", outputType.Reference(), ">;")
+	f.P(t(2), "},")
+	return nil
+}
+
+func (s serviceGenerator) generateURIMethod(f *codegen.File, method protoreflect.MethodDescriptor) error {
+	r, ok := httprule.Get(method)
+	if !ok {
+		return nil
+	}
+	rule, err := httprule.ParseRule(r)
+	if err != nil {
+		return fmt.Errorf("parse http rule: %w", err)
+	}
+
+	uriName := methodURIName(string(method.Name()), s.opts.ServiceMethodNaming)
+
+	f.P(t(2), uriName, "(request, options) { // eslint-disable-line @typescript-eslint/no-unused-vars")
+	s.generateMethodPathValidation(f, method.Input(), rule)
+	s.generateMethodPath(f, method.Input(), rule)
+	s.generateMethodQuery(f, method.Input(), rule)
+	f.P(t(3), "let uri = path;")
+	f.P(t(3), "if (queryParams.length > 0) {")
+	f.P(t(4), "uri += `?${queryParams.join(\"&\")}`")
+	f.P(t(3), "}")
+	f.P(t(3), "return uri;")
 	f.P(t(2), "},")
 	return nil
 }
@@ -277,4 +347,17 @@ func (s serviceGenerator) jsonPathSegments(path httprule.FieldPath, message prot
 
 func methodName(name, textcase string) string {
 	return TextToCase(name, textcase)
+}
+
+func serviceURIName(service protoreflect.ServiceDescriptor) string {
+	return descriptorTypeName(service) + "URIs"
+}
+
+func methodURIName(name, textcase string) string {
+	uriName := methodName(
+		"Get"+name,
+		textcase,
+	) + "URI"
+
+	return uriName
 }

@@ -16,6 +16,12 @@ type commentGenerator struct {
 
 func (c commentGenerator) generateLeading(f *codegen.File, indent int) {
 	loc := c.descriptor.ParentFile().SourceLocations().ByDescriptor(c.descriptor)
+
+	// Asterisks in comments may break multi-line comments, so they need to be escaped
+	if c.opts.UseMultiLineComment && len(loc.LeadingComments) > 0 {
+		loc.LeadingComments = escapeCommentAsterisk(loc.LeadingComments)
+	}
+
 	lines := strings.Split(loc.LeadingComments, "\n")
 
 	commentPrefix := getCommentPrefix(c.opts.UseMultiLineComment)
@@ -53,6 +59,10 @@ func fieldBehaviorComment(field protoreflect.FieldDescriptor) string {
 		behaviorStrings = append(behaviorStrings, b.String())
 	}
 	return "Behaviors: " + strings.Join(behaviorStrings, ", ")
+}
+
+func escapeCommentAsterisk(s string) string {
+	return strings.ReplaceAll(s, "*/", "∗/")
 }
 
 func getFieldBehaviors(field protoreflect.FieldDescriptor) []annotations.FieldBehavior {
