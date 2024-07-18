@@ -2,6 +2,12 @@
 /* eslint-disable camelcase */
 // @ts-nocheck
 
+export enum ErrorReason {
+  /**
+   * DEFAULT_ERROR_REASON is the default error reason.
+   */
+  DefaultErrorReasonUnspecified = "DEFAULT_ERROR_REASON_UNSPECIFIED",
+}
 export enum ShipmentState {
   /**
    * The shipment' state is unknown

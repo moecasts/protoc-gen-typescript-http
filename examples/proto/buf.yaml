@@ -13,3 +13,5 @@ lint:
     - RPC_RESPONSE_STANDARD_NAME
     - RPC_REQUEST_RESPONSE_UNIQUE
     - ENUM_VALUE_PREFIX
+  ignore:
+    - einride/tshttp

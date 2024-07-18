@@ -4,6 +4,8 @@ import (
 	"strconv"
 
 	"github.com/moecasts/protoc-gen-typescript-http/internal/codegen"
+	"github.com/moecasts/protoc-gen-typescript-http/proto/tshttp"
+	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protoreflect"
 )
 
@@ -15,7 +17,10 @@ type enumGenerator struct {
 
 func (e enumGenerator) Generate(f *codegen.File) {
 	commentGenerator{opts: e.opts, descriptor: e.enum}.generateLeading(f, 0)
+
 	if e.opts.UseEnumNumbers {
+		ev := proto.GetExtension(e.enum.Options(), tshttp.E_EnumFieldValueUsing)
+
 		f.P("export enum ", scopedDescriptorTypeName(e.pkg, e.enum), " {")
 
 		rangeEnumValues(e.enum, func(value protoreflect.EnumValueDescriptor, last bool) {
@@ -24,7 +29,13 @@ func (e enumGenerator) Generate(f *codegen.File) {
 			name := string(value.Name())
 			name = TextToCase(name, e.opts.EnumFieldNaming)
 
-			f.P(t(1), name, " = ", value.Number(), ",")
+			if ev == "name" {
+				finalValue := strconv.Quote(string(value.Name()))
+				f.P(t(1), name, " = ", finalValue, ",")
+			} else {
+				finalValue := value.Number()
+				f.P(t(1), name, " = ", finalValue, ",")
+			}
 		})
 
 		f.P("}")

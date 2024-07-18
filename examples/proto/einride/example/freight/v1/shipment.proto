@@ -2,10 +2,17 @@ syntax = "proto3";
 
 package einride.example.freight.v1;
 
+import "einride/tshttp/tshttp.proto";
 import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/wrappers.proto";
+
+enum ErrorReason {
+  option (tshttp.enum_field_value_using) = 'name';
+  // DEFAULT_ERROR_REASON is the default error reason.
+  DEFAULT_ERROR_REASON_UNSPECIFIED = 0;
+}
 
 enum ShipmentState {
   // The shipment' state is unknown

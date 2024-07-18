@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package einride.tshttp;
+
+import "google/protobuf/descriptor.proto";
+
+extend google.protobuf.EnumOptions {
+  // the value of the enum field
+  // option: name | value
+  // default: value
+  string enum_field_value_using = 2333;
+}
