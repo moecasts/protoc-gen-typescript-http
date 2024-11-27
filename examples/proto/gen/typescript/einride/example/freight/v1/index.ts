@@ -580,6 +580,40 @@ export type DeleteShipmentRequest = {
   name: string;
 };
 
+/** The URIs for FreightService */
+export interface FreightServiceURIs<T = unknown> {
+  /** Get the URI of `GetShipper` method */
+  getGetShipperURI(request: GetShipperRequest, options?: T): string;
+  /** Get the URI of `ListShippers` method */
+  getListShippersURI(request: ListShippersRequest, options?: T): string;
+  /** Get the URI of `CreateShipper` method */
+  getCreateShipperURI(request: CreateShipperRequest, options?: T): string;
+  /** Get the URI of `UpdateShipper` method */
+  getUpdateShipperURI(request: UpdateShipperRequest, options?: T): string;
+  /** Get the URI of `DeleteShipper` method */
+  getDeleteShipperURI(request: DeleteShipperRequest, options?: T): string;
+  /** Get the URI of `GetSite` method */
+  getGetSiteURI(request: GetSiteRequest, options?: T): string;
+  /** Get the URI of `ListSites` method */
+  getListSitesURI(request: ListSitesRequest, options?: T): string;
+  /** Get the URI of `CreateSite` method */
+  getCreateSiteURI(request: CreateSiteRequest, options?: T): string;
+  /** Get the URI of `UpdateSite` method */
+  getUpdateSiteURI(request: UpdateSiteRequest, options?: T): string;
+  /** Get the URI of `DeleteSite` method */
+  getDeleteSiteURI(request: DeleteSiteRequest, options?: T): string;
+  /** Get the URI of `GetShipment` method */
+  getGetShipmentURI(request: GetShipmentRequest, options?: T): string;
+  /** Get the URI of `ListShipments` method */
+  getListShipmentsURI(request: ListShipmentsRequest, options?: T): string;
+  /** Get the URI of `CreateShipment` method */
+  getCreateShipmentURI(request: CreateShipmentRequest, options?: T): string;
+  /** Get the URI of `UpdateShipment` method */
+  getUpdateShipmentURI(request: UpdateShipmentRequest, options?: T): string;
+  /** Get the URI of `DeleteShipment` method */
+  getDeleteShipmentURI(request: DeleteShipmentRequest, options?: T): string;
+}
+
 /**
  * This API represents a simple freight service.
  * It defines the following resource model:
@@ -592,6 +626,7 @@ export type DeleteShipmentRequest = {
  * resources, named `shippers/∗/shipments/*`
  */
 export interface FreightService<T = unknown> {
+  uris: FreightServiceURIs<T>;
   /**
    * Get a shipper.
    * See: https://google.aip.dev/131 (Standard methods: Get).
@@ -670,40 +705,6 @@ export interface FreightService<T = unknown> {
    * See: https://google.aip.dev/164 (Soft delete).
    */
   deleteShipment(request: DeleteShipmentRequest, options?: T): Promise<Shipment>;
-}
-
-/** The URIs for FreightService */
-export interface FreightServiceURIs<T = unknown> {
-  /** Get the URI of `GetShipper` method */
-  getGetShipperURI(request: GetShipperRequest, options?: T): string;
-  /** Get the URI of `ListShippers` method */
-  getListShippersURI(request: ListShippersRequest, options?: T): string;
-  /** Get the URI of `CreateShipper` method */
-  getCreateShipperURI(request: CreateShipperRequest, options?: T): string;
-  /** Get the URI of `UpdateShipper` method */
-  getUpdateShipperURI(request: UpdateShipperRequest, options?: T): string;
-  /** Get the URI of `DeleteShipper` method */
-  getDeleteShipperURI(request: DeleteShipperRequest, options?: T): string;
-  /** Get the URI of `GetSite` method */
-  getGetSiteURI(request: GetSiteRequest, options?: T): string;
-  /** Get the URI of `ListSites` method */
-  getListSitesURI(request: ListSitesRequest, options?: T): string;
-  /** Get the URI of `CreateSite` method */
-  getCreateSiteURI(request: CreateSiteRequest, options?: T): string;
-  /** Get the URI of `UpdateSite` method */
-  getUpdateSiteURI(request: UpdateSiteRequest, options?: T): string;
-  /** Get the URI of `DeleteSite` method */
-  getDeleteSiteURI(request: DeleteSiteRequest, options?: T): string;
-  /** Get the URI of `GetShipment` method */
-  getGetShipmentURI(request: GetShipmentRequest, options?: T): string;
-  /** Get the URI of `ListShipments` method */
-  getListShipmentsURI(request: ListShipmentsRequest, options?: T): string;
-  /** Get the URI of `CreateShipment` method */
-  getCreateShipmentURI(request: CreateShipmentRequest, options?: T): string;
-  /** Get the URI of `UpdateShipment` method */
-  getUpdateShipmentURI(request: UpdateShipmentRequest, options?: T): string;
-  /** Get the URI of `DeleteShipment` method */
-  getDeleteShipmentURI(request: DeleteShipmentRequest, options?: T): string;
 }
 
 export function getFreightServiceURIs<T = unknown>(
@@ -945,6 +946,7 @@ export function createFreightServiceClient<T = unknown>(
 ): FreightService<T> {
   const uris = getFreightServiceURIs<T>(handlerOptions);
   return {
+    uris,
     getShipper(request, options) { // eslint-disable-line @typescript-eslint/no-unused-vars
       const uri = uris.getGetShipperURI(request, options);
       const body = null;

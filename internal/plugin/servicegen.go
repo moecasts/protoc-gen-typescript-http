@@ -18,9 +18,9 @@ type serviceGenerator struct {
 }
 
 func (s serviceGenerator) Generate(f *codegen.File) error {
-	s.generateInterface(f)
-
 	s.generateURIInterface(f)
+
+	s.generateInterface(f)
 
 	if err := s.generateURIImpl(f); err != nil {
 		return err
@@ -88,6 +88,7 @@ func (s serviceGenerator) generateURIImpl(f *codegen.File) error {
 func (s serviceGenerator) generateInterface(f *codegen.File) {
 	commentGenerator{opts: s.opts, descriptor: s.service}.generateLeading(f, 0)
 	f.P("export interface ", descriptorTypeName(s.service), "<T = unknown> {")
+	f.P(t(1), "uris: ", serviceURIName(s.service), "<T>;")
 	rangeMethods(s.service.Methods(), func(method protoreflect.MethodDescriptor) {
 		if !supportedMethod(method) {
 			return
@@ -144,6 +145,7 @@ func (s serviceGenerator) generateClient(f *codegen.File) error {
 	)
 	f.P(t(1), "const uris = get", serviceURIName(s.service), "<T>(handlerOptions);")
 	f.P(t(1), "return {")
+	f.P(t(2), "uris,")
 	var methodErr error
 	rangeMethods(s.service.Methods(), func(method protoreflect.MethodDescriptor) {
 		if err := s.generateMethod(f, method); err != nil {

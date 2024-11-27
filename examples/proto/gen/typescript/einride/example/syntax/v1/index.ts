@@ -492,15 +492,6 @@ export type Request_Nested = {
   string: string;
 };
 
-export interface SyntaxService<T = unknown> {
-  queryOnly(request: Request, options?: T): Promise<Message>;
-  emptyVerb(request: wellKnownEmpty, options?: T): Promise<wellKnownEmpty>;
-  starBody(request: Request, options?: T): Promise<Message>;
-  body(request: Request, options?: T): Promise<Message>;
-  path(request: Request, options?: T): Promise<Message>;
-  pathBody(request: Request, options?: T): Promise<Message>;
-}
-
 /** The URIs for SyntaxService */
 export interface SyntaxServiceURIs<T = unknown> {
   /** Get the URI of `QueryOnly` method */
@@ -515,6 +506,16 @@ export interface SyntaxServiceURIs<T = unknown> {
   getPathURI(request: Request, options?: T): string;
   /** Get the URI of `PathBody` method */
   getPathBodyURI(request: Request, options?: T): string;
+}
+
+export interface SyntaxService<T = unknown> {
+  uris: SyntaxServiceURIs<T>;
+  queryOnly(request: Request, options?: T): Promise<Message>;
+  emptyVerb(request: wellKnownEmpty, options?: T): Promise<wellKnownEmpty>;
+  starBody(request: Request, options?: T): Promise<Message>;
+  body(request: Request, options?: T): Promise<Message>;
+  path(request: Request, options?: T): Promise<Message>;
+  pathBody(request: Request, options?: T): Promise<Message>;
 }
 
 export function getSyntaxServiceURIs<T = unknown>(
@@ -639,6 +640,7 @@ export function createSyntaxServiceClient<T = unknown>(
 ): SyntaxService<T> {
   const uris = getSyntaxServiceURIs<T>(handlerOptions);
   return {
+    uris,
     queryOnly(request, options) { // eslint-disable-line @typescript-eslint/no-unused-vars
       const uri = uris.getQueryOnlyURI(request, options);
       const body = null;
