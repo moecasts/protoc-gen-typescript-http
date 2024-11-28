@@ -6,7 +6,7 @@
  * Message
  */
 export type Message = {
-  forwardedMessage: einrideexamplesyntaxv1_Message;
+  forwardedMessage: einrideexamplesyntaxv1_Message | undefined;
   forwardedEnum: einrideexamplesyntaxv1_Enum;
 };
 
@@ -81,7 +81,7 @@ export type einrideexamplesyntaxv1_Message = {
   /**
    * message
    */
-  message: einrideexamplesyntaxv1_Message;
+  message: einrideexamplesyntaxv1_Message | undefined;
   /**
    * optional double
    */

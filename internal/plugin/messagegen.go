@@ -35,13 +35,21 @@ func (m messageGenerator) Generate(f *codegen.File) {
 
 		types = append(types, reference)
 
-		if IsWellKnownType(field.Message()) || m.opts.ForceMessageFieldUndefinable {
+		fieldUndefinable := !(IsWellKnownType(field.Message()) || m.opts.ForceMessageFieldUndefinable) &&
+			!isFieldBehaviorRequired(field) &&
+			(field.ContainingOneof() == nil && !field.HasOptionalKeyword() && !isFieldBehaviorOptional(field)) &&
+			isFieldMessageKindOptional(field)
+
+		if IsWellKnownType(field.Message()) || m.opts.ForceMessageFieldUndefinable || fieldUndefinable {
 			types = append(types, "undefined")
 		}
 
 		typesString := strings.Join(types, " | ")
 
-		if field.ContainingOneof() == nil && !field.HasOptionalKeyword() && !isFieldBehaviorOptional(field) {
+		fieldRequired := isFieldBehaviorRequired(field) ||
+			(field.ContainingOneof() == nil && !field.HasOptionalKeyword() && !isFieldBehaviorOptional(field))
+
+		if fieldRequired {
 			f.P(t(1), name, ": ", typesString, ";")
 		} else {
 			f.P(t(1), name, "?: ", typesString, ";")

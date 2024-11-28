@@ -218,7 +218,7 @@ export type Site = {
   /**
    * The geographic location of the site.
    */
-  latLng: googletype_LatLng;
+  latLng: googletype_LatLng | undefined;
 };
 
 /**

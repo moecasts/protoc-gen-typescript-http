@@ -90,7 +90,7 @@ export type Message = {
   /**
    * message
    */
-  message: Message;
+  message: Message | undefined;
   /**
    * optional double
    */
@@ -485,7 +485,7 @@ export enum Message_NestedEnum {
 export type Request = {
   string: string;
   repeatedString: string[];
-  nested: Request_Nested;
+  nested: Request_Nested | undefined;
 };
 
 export type Request_Nested = {

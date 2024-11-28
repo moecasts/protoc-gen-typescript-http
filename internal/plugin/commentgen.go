@@ -26,7 +26,15 @@ func (c commentGenerator) generateLeading(f *codegen.File, indent int) {
 
 	commentPrefix := getCommentPrefix(c.opts.UseMultiLineComment)
 
-	if c.opts.UseMultiLineComment && len(loc.LeadingComments) > 0 {
+	behaviorComment := ""
+
+	if field, ok := c.descriptor.(protoreflect.FieldDescriptor); ok {
+		behaviorComment = fieldBehaviorComment(field)
+	}
+
+	shouldPrintComment := c.opts.UseMultiLineComment && (len(loc.LeadingComments) > 0 || len(behaviorComment) > 0)
+
+	if shouldPrintComment {
 		f.P(t(indent), "/**")
 	}
 
@@ -36,14 +44,13 @@ func (c commentGenerator) generateLeading(f *codegen.File, indent int) {
 		}
 		f.P(t(indent), commentPrefix, " ", strings.TrimSpace(line))
 	}
-	if field, ok := c.descriptor.(protoreflect.FieldDescriptor); ok {
-		if behaviorComment := fieldBehaviorComment(field); len(behaviorComment) > 0 {
-			f.P(t(indent), commentPrefix)
-			f.P(t(indent), commentPrefix, " ", behaviorComment)
-		}
+
+	if len(behaviorComment) > 0 {
+		f.P(t(indent), commentPrefix)
+		f.P(t(indent), commentPrefix, " ", behaviorComment)
 	}
 
-	if c.opts.UseMultiLineComment && len(loc.LeadingComments) > 0 {
+	if shouldPrintComment {
 		f.P(t(indent), " */")
 	}
 }
@@ -95,4 +102,27 @@ func isFieldBehaviorOptional(field protoreflect.FieldDescriptor) bool {
 	}
 
 	return false
+}
+
+func isFieldBehaviorRequired(field protoreflect.FieldDescriptor) bool {
+	behaviors := getFieldBehaviors(field)
+	if len(behaviors) == 0 {
+		return false
+	}
+
+	for _, b := range behaviors {
+		if b.String() == "REQUIRED" {
+			return true
+		}
+	}
+
+	return false
+}
+
+func isFieldMessageKind(field protoreflect.FieldDescriptor) bool {
+	return field.Kind() == protoreflect.MessageKind
+}
+
+func isFieldMessageKindOptional(field protoreflect.FieldDescriptor) bool {
+	return isFieldMessageKind(field) && field.Cardinality() == protoreflect.Optional
 }

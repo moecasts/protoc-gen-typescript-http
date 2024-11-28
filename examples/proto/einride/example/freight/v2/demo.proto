@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package einride.example.freight.v2;
+
+import "google/api/field_behavior.proto";
+
+message DemoDetail {
+  string name = 1;
+  string description = 2;
+}
+
+// This is a demo message
+message Demo {
+  int32 id = 1;
+  DemoDetail detail_first = 2;
+  DemoDetail detail_second = 3 [(google.api.field_behavior) = REQUIRED];
+  repeated DemoDetail details = 4;
+}
