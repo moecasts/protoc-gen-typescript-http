@@ -5,9 +5,10 @@ import (
 	"strconv"
 	"strings"
 
+	"google.golang.org/protobuf/reflect/protoreflect"
+
 	"github.com/moecasts/protoc-gen-typescript-http/internal/codegen"
 	"github.com/moecasts/protoc-gen-typescript-http/internal/httprule"
-	"google.golang.org/protobuf/reflect/protoreflect"
 )
 
 type serviceGenerator struct {
@@ -313,12 +314,13 @@ func (s serviceGenerator) generateMethodQuery(
 		f.P(t(3), "if (request.", nullPath, ") {")
 		switch {
 		case field.IsMap():
-			f.P(t(4), "const ", jp, " = handlerOptions?.mapStringify")
+			jpVar := TextToCase(jp, "camelcase")
+			f.P(t(4), "const ", jpVar, " = handlerOptions?.mapStringify")
 			f.P(t(5), "? handlerOptions.mapStringify(request.", jp, ")")
 			f.P(t(5), ": Object.entries(request.", jp, ").map((x) => (")
 			f.P(t(6), "`${encodeURIComponent(`", jp, "[${x[0]}]`)}=${encodeURIComponent(x[1].toString())}`")
 			f.P(t(5), "));")
-			f.P(t(4), "queryParams.push(", jp, ");")
+			f.P(t(4), "queryParams.push(", jpVar, ");")
 		case field.IsList():
 			f.P(t(4), "request.", jp, ".forEach((x) => {")
 			f.P(t(5), "queryParams.push(`", jp, "=${encodeURIComponent(x.toString())}`);")
