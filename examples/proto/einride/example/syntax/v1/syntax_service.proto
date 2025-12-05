@@ -46,6 +46,10 @@ message Request {
   repeated string repeated_string = 2;
   message Nested {
     string string = 1;
+    // Map field in nested message to test variable name escaping
+    // This tests that nested.tags generates a valid JS variable name (nestedTags)
+    // instead of invalid "nested.tags"
+    map<string, string> tags = 2;
   }
   Nested nested = 3;
 }

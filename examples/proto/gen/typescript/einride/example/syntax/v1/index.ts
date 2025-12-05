@@ -490,6 +490,12 @@ export type Request = {
 
 export type Request_Nested = {
   string: string;
+  /**
+   * Map field in nested message to test variable name escaping
+   * This tests that nested.tags generates a valid JS variable name (nestedTags)
+   * instead of invalid "nested.tags"
+   */
+  tags: { [key: string]: string };
 };
 
 /** The URIs for SyntaxService */
@@ -538,6 +544,14 @@ export function getSyntaxServiceURIs<T = unknown>(
       }
       if (request.nested?.string) {
         queryParams.push(`nested.string=${encodeURIComponent(request.nested.string.toString())}`);
+      }
+      if (request.nested?.tags) {
+        const nestedTags = handlerOptions?.mapStringify
+          ? handlerOptions.mapStringify(request.nested.tags)
+          : Object.entries(request.nested.tags).map((x) => (
+            `${encodeURIComponent(`nested.tags[${x[0]}]`)}=${encodeURIComponent(x[1].toString())}`
+          ));
+        queryParams.push(nestedTags);
       }
       let uri = path;
       if (queryParams.length > 0) {
@@ -593,6 +607,14 @@ export function getSyntaxServiceURIs<T = unknown>(
       }
       if (request.nested?.string) {
         queryParams.push(`nested.string=${encodeURIComponent(request.nested.string.toString())}`);
+      }
+      if (request.nested?.tags) {
+        const nestedTags = handlerOptions?.mapStringify
+          ? handlerOptions.mapStringify(request.nested.tags)
+          : Object.entries(request.nested.tags).map((x) => (
+            `${encodeURIComponent(`nested.tags[${x[0]}]`)}=${encodeURIComponent(x[1].toString())}`
+          ));
+        queryParams.push(nestedTags);
       }
       let uri = path;
       if (queryParams.length > 0) {
