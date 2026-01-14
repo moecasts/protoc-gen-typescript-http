@@ -580,6 +580,63 @@ export type DeleteShipmentRequest = {
   name: string;
 };
 
+/**
+ * Request message for FreightService.GetShipperById.
+ */
+export type GetShipperByIdRequest = {
+  /**
+   * The numeric ID of the shipper to retrieve.
+   * Must be a valid numeric ID (digits only).
+   *
+   * Behaviors: REQUIRED
+   */
+  id: string;
+};
+
+/**
+ * Request message for FreightService.GetShipmentBySlug.
+ */
+export type GetShipmentBySlugRequest = {
+  /**
+   * The slug or alphanumeric ID of the shipment to retrieve.
+   * Supports alphanumeric characters and hyphens.
+   *
+   * Behaviors: REQUIRED
+   */
+  slug: string;
+};
+
+/**
+ * Request message for FreightService.GetSiteByShipperId.
+ */
+export type GetSiteByShipperIdRequest = {
+  /**
+   * The shipper information.
+   *
+   * Behaviors: REQUIRED
+   */
+  shipper: GetSiteByShipperIdRequest_ShipperInfo;
+  /**
+   * The site ID.
+   *
+   * Behaviors: REQUIRED
+   */
+  siteId: string;
+};
+
+/**
+ * Nested shipper information with numeric ID validation.
+ */
+export type GetSiteByShipperIdRequest_ShipperInfo = {
+  /**
+   * The numeric ID of the shipper.
+   * Must be a valid numeric ID (digits only).
+   *
+   * Behaviors: REQUIRED
+   */
+  id: string;
+};
+
 /** The URIs for FreightService */
 export interface FreightServiceURIs<T = unknown> {
   /** Get the URI of `GetShipper` method */
@@ -612,6 +669,12 @@ export interface FreightServiceURIs<T = unknown> {
   getUpdateShipmentURI(request: UpdateShipmentRequest, options?: T): string;
   /** Get the URI of `DeleteShipment` method */
   getDeleteShipmentURI(request: DeleteShipmentRequest, options?: T): string;
+  /** Get the URI of `GetShipperById` method */
+  getGetShipperByIdURI(request: GetShipperByIdRequest, options?: T): string;
+  /** Get the URI of `GetShipmentBySlug` method */
+  getGetShipmentBySlugURI(request: GetShipmentBySlugRequest, options?: T): string;
+  /** Get the URI of `GetSiteByShipperId` method */
+  getGetSiteByShipperIdURI(request: GetSiteByShipperIdRequest, options?: T): string;
 }
 
 /**
@@ -705,6 +768,21 @@ export interface FreightService<T = unknown> {
    * See: https://google.aip.dev/164 (Soft delete).
    */
   deleteShipment(request: DeleteShipmentRequest, options?: T): Promise<Shipment>;
+  /**
+   * Get a shipper by numeric ID.
+   * Example of using regex pattern to enforce numeric IDs only.
+   */
+  getShipperById(request: GetShipperByIdRequest, options?: T): Promise<Shipper>;
+  /**
+   * Get a shipment by slug or ID.
+   * Example of using regex pattern to support alphanumeric slugs.
+   */
+  getShipmentBySlug(request: GetShipmentBySlugRequest, options?: T): Promise<Shipment>;
+  /**
+   * Get a site with nested field regex validation.
+   * Example of using regex pattern on nested fields.
+   */
+  getSiteByShipperId(request: GetSiteByShipperIdRequest, options?: T): Promise<Site>;
 }
 
 export function getFreightServiceURIs<T = unknown>(
@@ -916,6 +994,45 @@ export function getFreightServiceURIs<T = unknown>(
         throw new Error("missing required field request.name");
       }
       const path = `v1/${request.name}`; // eslint-disable-line quotes
+      const queryParams: string[] = [];
+      let uri = path;
+      if (queryParams.length > 0) {
+        uri += `?${queryParams.join("&")}`
+      }
+      return uri;
+    },
+    getGetShipperByIdURI(request, options) { // eslint-disable-line @typescript-eslint/no-unused-vars
+      if (!request.id) {
+        throw new Error("missing required field request.id");
+      }
+      const path = `v1/shippers-by-id/${request.id}`; // eslint-disable-line quotes
+      const queryParams: string[] = [];
+      let uri = path;
+      if (queryParams.length > 0) {
+        uri += `?${queryParams.join("&")}`
+      }
+      return uri;
+    },
+    getGetShipmentBySlugURI(request, options) { // eslint-disable-line @typescript-eslint/no-unused-vars
+      if (!request.slug) {
+        throw new Error("missing required field request.slug");
+      }
+      const path = `v1/shipments/${request.slug}`; // eslint-disable-line quotes
+      const queryParams: string[] = [];
+      let uri = path;
+      if (queryParams.length > 0) {
+        uri += `?${queryParams.join("&")}`
+      }
+      return uri;
+    },
+    getGetSiteByShipperIdURI(request, options) { // eslint-disable-line @typescript-eslint/no-unused-vars
+      if (!request.shipper?.id) {
+        throw new Error("missing required field request.shipper.id");
+      }
+      if (!request.siteId) {
+        throw new Error("missing required field request.site_id");
+      }
+      const path = `v1/sites/${request.shipper.id}/${request.siteId}`; // eslint-disable-line quotes
       const queryParams: string[] = [];
       let uri = path;
       if (queryParams.length > 0) {
@@ -1141,6 +1258,45 @@ export function createFreightServiceClient<T = unknown>(
         service: "FreightService",
         method: "DeleteShipment",
       }) as Promise<Shipment>;
+    },
+    getShipperById(request, options) { // eslint-disable-line @typescript-eslint/no-unused-vars
+      const uri = uris.getGetShipperByIdURI(request, options);
+      const body = null;
+      return handler({
+        path: uri,
+        method: "GET",
+        body,
+        ...(options as T),
+      }, {
+        service: "FreightService",
+        method: "GetShipperById",
+      }) as Promise<Shipper>;
+    },
+    getShipmentBySlug(request, options) { // eslint-disable-line @typescript-eslint/no-unused-vars
+      const uri = uris.getGetShipmentBySlugURI(request, options);
+      const body = null;
+      return handler({
+        path: uri,
+        method: "GET",
+        body,
+        ...(options as T),
+      }, {
+        service: "FreightService",
+        method: "GetShipmentBySlug",
+      }) as Promise<Shipment>;
+    },
+    getSiteByShipperId(request, options) { // eslint-disable-line @typescript-eslint/no-unused-vars
+      const uri = uris.getGetSiteByShipperIdURI(request, options);
+      const body = null;
+      return handler({
+        path: uri,
+        method: "GET",
+        body,
+        ...(options as T),
+      }, {
+        service: "FreightService",
+        method: "GetSiteByShipperId",
+      }) as Promise<Site>;
     },
   };
 }

@@ -154,6 +154,24 @@ service FreightService {
     option (google.api.http) = {delete: "/v1/{name=shippers/*/shipments/*}"};
     option (google.api.method_signature) = "name";
   }
+
+  // Get a shipper by numeric ID.
+  // Example of using regex pattern to enforce numeric IDs only.
+  rpc GetShipperById(GetShipperByIdRequest) returns (Shipper) {
+    option (google.api.http) = {get: "/v1/shippers-by-id/{id=[0-9]+}"};
+  }
+
+  // Get a shipment by slug or ID.
+  // Example of using regex pattern to support alphanumeric slugs.
+  rpc GetShipmentBySlug(GetShipmentBySlugRequest) returns (Shipment) {
+    option (google.api.http) = {get: "/v1/shipments/{slug=[a-zA-Z0-9\\-]+}"};
+  }
+
+  // Get a site with nested field regex validation.
+  // Example of using regex pattern on nested fields.
+  rpc GetSiteByShipperId(GetSiteByShipperIdRequest) returns (Site) {
+    option (google.api.http) = {get: "/v1/sites/{shipper.id=[0-9]+}/{site_id}"};
+  }
 }
 
 // Request message for FreightService.GetShipper.
@@ -382,4 +400,34 @@ message DeleteShipmentRequest {
     (google.api.field_behavior) = REQUIRED,
     (google.api.resource_reference).type = "freight-example.einride.tech/Shipment"
   ];
+}
+
+// Request message for FreightService.GetShipperById.
+message GetShipperByIdRequest {
+  // The numeric ID of the shipper to retrieve.
+  // Must be a valid numeric ID (digits only).
+  string id = 1 [(google.api.field_behavior) = REQUIRED];
+}
+
+// Request message for FreightService.GetShipmentBySlug.
+message GetShipmentBySlugRequest {
+  // The slug or alphanumeric ID of the shipment to retrieve.
+  // Supports alphanumeric characters and hyphens.
+  string slug = 1 [(google.api.field_behavior) = REQUIRED];
+}
+
+// Request message for FreightService.GetSiteByShipperId.
+message GetSiteByShipperIdRequest {
+  // Nested shipper information with numeric ID validation.
+  message ShipperInfo {
+    // The numeric ID of the shipper.
+    // Must be a valid numeric ID (digits only).
+    string id = 1 [(google.api.field_behavior) = REQUIRED];
+  }
+
+  // The shipper information.
+  ShipperInfo shipper = 1 [(google.api.field_behavior) = REQUIRED];
+
+  // The site ID.
+  string site_id = 2 [(google.api.field_behavior) = REQUIRED];
 }

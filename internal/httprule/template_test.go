@@ -143,6 +143,77 @@ func Test_ParseTemplate(t *testing.T) {
 				},
 			},
 		},
+		{
+			input: "/v1/users/{id=[0-9]+}",
+			path: Template{
+				Segments: []Segment{
+					{Kind: SegmentKindLiteral, Literal: "v1"},
+					{Kind: SegmentKindLiteral, Literal: "users"},
+					{
+						Kind: SegmentKindVariable,
+						Variable: VariableSegment{
+							FieldPath: []string{"id"},
+							Segments: []Segment{
+								{Kind: SegmentKindMatchSingle},
+							},
+						},
+					},
+				},
+			},
+		},
+		{
+			input: "/v1/articles/{id=[a-zA-Z0-9\\-]+}",
+			path: Template{
+				Segments: []Segment{
+					{Kind: SegmentKindLiteral, Literal: "v1"},
+					{Kind: SegmentKindLiteral, Literal: "articles"},
+					{
+						Kind: SegmentKindVariable,
+						Variable: VariableSegment{
+							FieldPath: []string{"id"},
+							Segments: []Segment{
+								{Kind: SegmentKindMatchSingle},
+							},
+						},
+					},
+				},
+			},
+		},
+		{
+			input: "/v1/users/{user.id=[0-9]+}/profile",
+			path: Template{
+				Segments: []Segment{
+					{Kind: SegmentKindLiteral, Literal: "v1"},
+					{Kind: SegmentKindLiteral, Literal: "users"},
+					{
+						Kind: SegmentKindVariable,
+						Variable: VariableSegment{
+							FieldPath: []string{"user", "id"},
+							Segments: []Segment{
+								{Kind: SegmentKindMatchSingle},
+							},
+						},
+					},
+					{Kind: SegmentKindLiteral, Literal: "profile"},
+				},
+			},
+		},
+		{
+			input: "/{id=[0-9]+}",
+			path: Template{
+				Segments: []Segment{
+					{
+						Kind: SegmentKindVariable,
+						Variable: VariableSegment{
+							FieldPath: []string{"id"},
+							Segments: []Segment{
+								{Kind: SegmentKindMatchSingle},
+							},
+						},
+					},
+				},
+			},
+		},
 	} {
 		tt := tt
 		t.Run(tt.input, func(t *testing.T) {
@@ -168,6 +239,8 @@ func Test_ParseTemplate_Invalid(t *testing.T) {
 		{template: "/**/*", expected: "'**' only allowed as last part of template"},
 		{template: "/v1/messages/*", expected: "'*' must only be used in variables"},
 		{template: "/v1/{id}/{id}", expected: "variable 'id' bound multiple times"},
+		{template: "/{id=[0-9}", expected: "unmatched '[' in regex pattern"},
+		{template: "/{id=[0-9]]", expected: "expected literal at position"},
 	} {
 		tt := tt
 		t.Run(tt.template, func(t *testing.T) {

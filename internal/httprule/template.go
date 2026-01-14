@@ -156,11 +156,23 @@ func (p *parser) parseVariableSegment() (Segment, error) {
 	}
 	if p.tok == '=' {
 		p.next()
-		s, err := p.parseSegments()
-		if err != nil {
-			return Segment{}, err
+
+		// Skip regex pattern if present
+		if p.tok == '[' {
+			if err := p.skipRegexPattern(); err != nil {
+				return Segment{}, err
+			}
 		}
-		segments = s
+
+		// Check if there are more segments after the regex
+		// e.g., {id=[0-9]+/messages} would have /messages after the regex
+		if p.tok != '}' && p.tok != -1 {
+			s, err := p.parseSegments()
+			if err != nil {
+				return Segment{}, err
+			}
+			segments = s
+		}
 	}
 	if err := p.expect('}'); err != nil {
 		return Segment{}, err
@@ -172,6 +184,56 @@ func (p *parser) parseVariableSegment() (Segment, error) {
 			Segments:  segments,
 		},
 	}, nil
+}
+
+// skipRegexPattern skips a regex pattern enclosed in square brackets.
+// Example: [0-9]+ or [a-zA-Z0-9\\-]+
+func (p *parser) skipRegexPattern() error {
+	if err := p.expect('['); err != nil {
+		return err
+	}
+
+	depth := 1
+	for depth > 0 && p.tok != -1 {
+		// Handle escaped characters
+		if p.tok == '\\' {
+			p.next() // skip backslash
+			if p.tok != -1 {
+				p.next() // skip escaped character
+			}
+			continue
+		}
+
+		if p.tok == '[' {
+			depth++
+		} else if p.tok == ']' {
+			depth--
+			if depth == 0 {
+				p.next() // consume closing ]
+				break
+			}
+		}
+		p.next()
+	}
+
+	if depth != 0 {
+		return fmt.Errorf("unmatched '[' in regex pattern at position %d", p.pos)
+	}
+
+	// Skip regex quantifiers after the bracket expression (+, *, ?, {n,m})
+	if p.tok == '+' || p.tok == '*' || p.tok == '?' {
+		p.next()
+	} else if p.tok == '{' {
+		// Skip {n,m} quantifier
+		for p.tok != '}' && p.tok != -1 {
+			p.next()
+		}
+		if p.tok == '}' {
+			p.next()
+		}
+	}
+
+	return nil
 }
 
 func (p *parser) parseVerb() (string, error) {
