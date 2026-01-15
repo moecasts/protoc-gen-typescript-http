@@ -31,8 +31,8 @@ service FreightService {
   // See: https://google.aip.dev/131 (Standard methods: Get).
   rpc GetShipper(GetShipperRequest) returns (Shipper) {
     option (google.api.http) = {
-      get: "/v1/{name=shippers/*}",
-      additional_bindings {get: "/v1/{name=shippers-alias/*}"}
+      get: "/v1/{name=shippers/*}"
+      additional_bindings: {get: "/v1/{name=shippers-alias/*}"}
     };
     option (google.api.method_signature) = "name";
   }

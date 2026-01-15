@@ -97,3 +97,50 @@ export function siteClient() {
   return createShipperServiceClient<RequestOptions>(fetchRequestHandler);
 }
 ```
+
+---
+
+Development
+-----------
+
+### Quick Start
+
+```bash
+# Install development tools
+make tools
+
+# Run all checks
+make all
+
+# Development workflow
+make dev
+```
+
+### Available Commands
+
+-	`make all` - Run all checks (default)
+-	`make check` - Run git commit checks
+-	`make lint` - Run all linters (Go, TypeScript)
+-	`make test` - Run Go tests
+-	`make generate` - Build and generate code from proto
+-	`make format` - Format all files (Markdown, YAML, proto)
+-	`make dev` - Quick development workflow (format, build, generate)
+-	`make tools` - Install all development tools
+-	`make clean` - Clean build artifacts
+-	`make help` - Show all available commands
+
+### Proto Commands
+
+-	`make proto` - Run all proto tasks (build, lint, format, generate)
+-	`make build` - Build the protoc-gen-typescript-http binary
+-	`make buf-lint` - Lint proto files
+-	`make buf-format` - Format proto files
+-	`make buf-generate` - Generate TypeScript code from proto files
+
+### Prerequisites
+
+-	Go 1.17+
+-	Node.js 18+ (for ESLint)
+-	buf (protobuf tool) - or run `make tools` to install
+
+See the [Makefile](./Makefile) for all available targets.

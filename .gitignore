@@ -3,3 +3,12 @@ tools/*/*/
 bin
 .semrel
 .generated-go-semantic-release-changelog.md
+
+# New build system
+.tools/
+coverage.out
+*.log
+
+# Node.js
+node_modules/
+pnpm-lock.yaml

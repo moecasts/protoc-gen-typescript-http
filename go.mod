@@ -1,6 +1,6 @@
 module github.com/moecasts/protoc-gen-typescript-http
 
-go 1.17
+go 1.21
 
 require (
 	github.com/iancoleman/strcase v0.3.0

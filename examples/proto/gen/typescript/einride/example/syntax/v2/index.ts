@@ -403,7 +403,7 @@ export enum einrideexamplesyntaxv1_Enum {
 // Otherwise, the value will be converted into a JSON object,
 // and the "@type" field will be inserted to indicate the actual data type.
 interface wellKnownAny {
-  "@type": string;
+  '@type': string;
   [key: string]: unknown;
 }
 

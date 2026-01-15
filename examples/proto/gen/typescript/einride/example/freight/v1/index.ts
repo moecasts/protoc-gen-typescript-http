@@ -6,7 +6,7 @@ export enum ErrorReason {
   /**
    * DEFAULT_ERROR_REASON is the default error reason.
    */
-  DefaultErrorReasonUnspecified = "DEFAULT_ERROR_REASON_UNSPECIFIED",
+  DefaultErrorReasonUnspecified = 'DEFAULT_ERROR_REASON_UNSPECIFIED',
 }
 export enum ShipmentState {
   /**
@@ -787,24 +787,24 @@ export interface FreightService<T = unknown> {
 
 export function getFreightServiceURIs<T = unknown>(
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  handlerOptions: {
-    mapStringify?: (map: Record<string, unknown>) => string;
-  } = {},
+  handlerOptions: { mapStringify?: (map: Record<string, unknown>) => string } = {}
 ): FreightServiceURIs<T> {
   return {
-    getGetShipperURI(request, options) { // eslint-disable-line @typescript-eslint/no-unused-vars
+    getGetShipperURI(request, options) {
+      // eslint-disable-line @typescript-eslint/no-unused-vars
       if (!request.name) {
-        throw new Error("missing required field request.name");
+        throw new Error('missing required field request.name');
       }
       const path = `v1/${request.name}`; // eslint-disable-line quotes
       const queryParams: string[] = [];
       let uri = path;
       if (queryParams.length > 0) {
-        uri += `?${queryParams.join("&")}`
+        uri += `?${queryParams.join('&')}`;
       }
       return uri;
     },
-    getListShippersURI(request, options) { // eslint-disable-line @typescript-eslint/no-unused-vars
+    getListShippersURI(request, options) {
+      // eslint-disable-line @typescript-eslint/no-unused-vars
       const path = `v1/shippers`; // eslint-disable-line quotes
       const queryParams: string[] = [];
       if (request.pageSize) {
@@ -815,22 +815,24 @@ export function getFreightServiceURIs<T = unknown>(
       }
       let uri = path;
       if (queryParams.length > 0) {
-        uri += `?${queryParams.join("&")}`
+        uri += `?${queryParams.join('&')}`;
       }
       return uri;
     },
-    getCreateShipperURI(request, options) { // eslint-disable-line @typescript-eslint/no-unused-vars
+    getCreateShipperURI(request, options) {
+      // eslint-disable-line @typescript-eslint/no-unused-vars
       const path = `v1/shippers`; // eslint-disable-line quotes
       const queryParams: string[] = [];
       let uri = path;
       if (queryParams.length > 0) {
-        uri += `?${queryParams.join("&")}`
+        uri += `?${queryParams.join('&')}`;
       }
       return uri;
     },
-    getUpdateShipperURI(request, options) { // eslint-disable-line @typescript-eslint/no-unused-vars
+    getUpdateShipperURI(request, options) {
+      // eslint-disable-line @typescript-eslint/no-unused-vars
       if (!request.shipper?.name) {
-        throw new Error("missing required field request.shipper.name");
+        throw new Error('missing required field request.shipper.name');
       }
       const path = `v1/${request.shipper.name}`; // eslint-disable-line quotes
       const queryParams: string[] = [];
@@ -839,37 +841,40 @@ export function getFreightServiceURIs<T = unknown>(
       }
       let uri = path;
       if (queryParams.length > 0) {
-        uri += `?${queryParams.join("&")}`
+        uri += `?${queryParams.join('&')}`;
       }
       return uri;
     },
-    getDeleteShipperURI(request, options) { // eslint-disable-line @typescript-eslint/no-unused-vars
+    getDeleteShipperURI(request, options) {
+      // eslint-disable-line @typescript-eslint/no-unused-vars
       if (!request.name) {
-        throw new Error("missing required field request.name");
+        throw new Error('missing required field request.name');
       }
       const path = `v1/${request.name}`; // eslint-disable-line quotes
       const queryParams: string[] = [];
       let uri = path;
       if (queryParams.length > 0) {
-        uri += `?${queryParams.join("&")}`
+        uri += `?${queryParams.join('&')}`;
       }
       return uri;
     },
-    getGetSiteURI(request, options) { // eslint-disable-line @typescript-eslint/no-unused-vars
+    getGetSiteURI(request, options) {
+      // eslint-disable-line @typescript-eslint/no-unused-vars
       if (!request.name) {
-        throw new Error("missing required field request.name");
+        throw new Error('missing required field request.name');
       }
       const path = `v1/${request.name}`; // eslint-disable-line quotes
       const queryParams: string[] = [];
       let uri = path;
       if (queryParams.length > 0) {
-        uri += `?${queryParams.join("&")}`
+        uri += `?${queryParams.join('&')}`;
       }
       return uri;
     },
-    getListSitesURI(request, options) { // eslint-disable-line @typescript-eslint/no-unused-vars
+    getListSitesURI(request, options) {
+      // eslint-disable-line @typescript-eslint/no-unused-vars
       if (!request.parent) {
-        throw new Error("missing required field request.parent");
+        throw new Error('missing required field request.parent');
       }
       const path = `v1/${request.parent}/sites`; // eslint-disable-line quotes
       const queryParams: string[] = [];
@@ -881,25 +886,27 @@ export function getFreightServiceURIs<T = unknown>(
       }
       let uri = path;
       if (queryParams.length > 0) {
-        uri += `?${queryParams.join("&")}`
+        uri += `?${queryParams.join('&')}`;
       }
       return uri;
     },
-    getCreateSiteURI(request, options) { // eslint-disable-line @typescript-eslint/no-unused-vars
+    getCreateSiteURI(request, options) {
+      // eslint-disable-line @typescript-eslint/no-unused-vars
       if (!request.parent) {
-        throw new Error("missing required field request.parent");
+        throw new Error('missing required field request.parent');
       }
       const path = `v1/${request.parent}/sites`; // eslint-disable-line quotes
       const queryParams: string[] = [];
       let uri = path;
       if (queryParams.length > 0) {
-        uri += `?${queryParams.join("&")}`
+        uri += `?${queryParams.join('&')}`;
       }
       return uri;
     },
-    getUpdateSiteURI(request, options) { // eslint-disable-line @typescript-eslint/no-unused-vars
+    getUpdateSiteURI(request, options) {
+      // eslint-disable-line @typescript-eslint/no-unused-vars
       if (!request.site?.name) {
-        throw new Error("missing required field request.site.name");
+        throw new Error('missing required field request.site.name');
       }
       const path = `v1/${request.site.name}`; // eslint-disable-line quotes
       const queryParams: string[] = [];
@@ -908,37 +915,40 @@ export function getFreightServiceURIs<T = unknown>(
       }
       let uri = path;
       if (queryParams.length > 0) {
-        uri += `?${queryParams.join("&")}`
+        uri += `?${queryParams.join('&')}`;
       }
       return uri;
     },
-    getDeleteSiteURI(request, options) { // eslint-disable-line @typescript-eslint/no-unused-vars
+    getDeleteSiteURI(request, options) {
+      // eslint-disable-line @typescript-eslint/no-unused-vars
       if (!request.name) {
-        throw new Error("missing required field request.name");
+        throw new Error('missing required field request.name');
       }
       const path = `v1/${request.name}`; // eslint-disable-line quotes
       const queryParams: string[] = [];
       let uri = path;
       if (queryParams.length > 0) {
-        uri += `?${queryParams.join("&")}`
+        uri += `?${queryParams.join('&')}`;
       }
       return uri;
     },
-    getGetShipmentURI(request, options) { // eslint-disable-line @typescript-eslint/no-unused-vars
+    getGetShipmentURI(request, options) {
+      // eslint-disable-line @typescript-eslint/no-unused-vars
       if (!request.name) {
-        throw new Error("missing required field request.name");
+        throw new Error('missing required field request.name');
       }
       const path = `v1/${request.name}`; // eslint-disable-line quotes
       const queryParams: string[] = [];
       let uri = path;
       if (queryParams.length > 0) {
-        uri += `?${queryParams.join("&")}`
+        uri += `?${queryParams.join('&')}`;
       }
       return uri;
     },
-    getListShipmentsURI(request, options) { // eslint-disable-line @typescript-eslint/no-unused-vars
+    getListShipmentsURI(request, options) {
+      // eslint-disable-line @typescript-eslint/no-unused-vars
       if (!request.parent) {
-        throw new Error("missing required field request.parent");
+        throw new Error('missing required field request.parent');
       }
       const path = `v1/${request.parent}/shipments`; // eslint-disable-line quotes
       const queryParams: string[] = [];
@@ -951,32 +961,35 @@ export function getFreightServiceURIs<T = unknown>(
       if (request.query) {
         const query = handlerOptions?.mapStringify
           ? handlerOptions.mapStringify(request.query)
-          : Object.entries(request.query).map((x) => (
-            `${encodeURIComponent(`query[${x[0]}]`)}=${encodeURIComponent(x[1].toString())}`
-          ));
+          : Object.entries(request.query).map(
+              (x) =>
+                `${encodeURIComponent(`query[${x[0]}]`)}=${encodeURIComponent(x[1].toString())}`
+            );
         queryParams.push(query);
       }
       let uri = path;
       if (queryParams.length > 0) {
-        uri += `?${queryParams.join("&")}`
+        uri += `?${queryParams.join('&')}`;
       }
       return uri;
     },
-    getCreateShipmentURI(request, options) { // eslint-disable-line @typescript-eslint/no-unused-vars
+    getCreateShipmentURI(request, options) {
+      // eslint-disable-line @typescript-eslint/no-unused-vars
       if (!request.parent) {
-        throw new Error("missing required field request.parent");
+        throw new Error('missing required field request.parent');
       }
       const path = `v1/${request.parent}/shipments`; // eslint-disable-line quotes
       const queryParams: string[] = [];
       let uri = path;
       if (queryParams.length > 0) {
-        uri += `?${queryParams.join("&")}`
+        uri += `?${queryParams.join('&')}`;
       }
       return uri;
     },
-    getUpdateShipmentURI(request, options) { // eslint-disable-line @typescript-eslint/no-unused-vars
+    getUpdateShipmentURI(request, options) {
+      // eslint-disable-line @typescript-eslint/no-unused-vars
       if (!request.shipment?.name) {
-        throw new Error("missing required field request.shipment.name");
+        throw new Error('missing required field request.shipment.name');
       }
       const path = `v1/${request.shipment.name}`; // eslint-disable-line quotes
       const queryParams: string[] = [];
@@ -985,58 +998,62 @@ export function getFreightServiceURIs<T = unknown>(
       }
       let uri = path;
       if (queryParams.length > 0) {
-        uri += `?${queryParams.join("&")}`
+        uri += `?${queryParams.join('&')}`;
       }
       return uri;
     },
-    getDeleteShipmentURI(request, options) { // eslint-disable-line @typescript-eslint/no-unused-vars
+    getDeleteShipmentURI(request, options) {
+      // eslint-disable-line @typescript-eslint/no-unused-vars
       if (!request.name) {
-        throw new Error("missing required field request.name");
+        throw new Error('missing required field request.name');
       }
       const path = `v1/${request.name}`; // eslint-disable-line quotes
       const queryParams: string[] = [];
       let uri = path;
       if (queryParams.length > 0) {
-        uri += `?${queryParams.join("&")}`
+        uri += `?${queryParams.join('&')}`;
       }
       return uri;
     },
-    getGetShipperByIdURI(request, options) { // eslint-disable-line @typescript-eslint/no-unused-vars
+    getGetShipperByIdURI(request, options) {
+      // eslint-disable-line @typescript-eslint/no-unused-vars
       if (!request.id) {
-        throw new Error("missing required field request.id");
+        throw new Error('missing required field request.id');
       }
       const path = `v1/shippers-by-id/${request.id}`; // eslint-disable-line quotes
       const queryParams: string[] = [];
       let uri = path;
       if (queryParams.length > 0) {
-        uri += `?${queryParams.join("&")}`
+        uri += `?${queryParams.join('&')}`;
       }
       return uri;
     },
-    getGetShipmentBySlugURI(request, options) { // eslint-disable-line @typescript-eslint/no-unused-vars
+    getGetShipmentBySlugURI(request, options) {
+      // eslint-disable-line @typescript-eslint/no-unused-vars
       if (!request.slug) {
-        throw new Error("missing required field request.slug");
+        throw new Error('missing required field request.slug');
       }
       const path = `v1/shipments/${request.slug}`; // eslint-disable-line quotes
       const queryParams: string[] = [];
       let uri = path;
       if (queryParams.length > 0) {
-        uri += `?${queryParams.join("&")}`
+        uri += `?${queryParams.join('&')}`;
       }
       return uri;
     },
-    getGetSiteByShipperIdURI(request, options) { // eslint-disable-line @typescript-eslint/no-unused-vars
+    getGetSiteByShipperIdURI(request, options) {
+      // eslint-disable-line @typescript-eslint/no-unused-vars
       if (!request.shipper?.id) {
-        throw new Error("missing required field request.shipper.id");
+        throw new Error('missing required field request.shipper.id');
       }
       if (!request.siteId) {
-        throw new Error("missing required field request.site_id");
+        throw new Error('missing required field request.site_id');
       }
       const path = `v1/sites/${request.shipper.id}/${request.siteId}`; // eslint-disable-line quotes
       const queryParams: string[] = [];
       let uri = path;
       if (queryParams.length > 0) {
-        uri += `?${queryParams.join("&")}`
+        uri += `?${queryParams.join('&')}`;
       }
       return uri;
     },
@@ -1051,7 +1068,7 @@ type RequestType<T = Record<string, any> | string | null> = {
 
 type RequestHandler<T = unknown> = (
   request: RequestType & T,
-  meta: { service: string, method: string },
+  meta: { service: string; method: string }
 ) => Promise<unknown>;
 
 export function createFreightServiceClient<T = unknown>(
@@ -1059,244 +1076,316 @@ export function createFreightServiceClient<T = unknown>(
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   handlerOptions: {
     mapStringify?: (map: Record<string, unknown>) => string;
-  } = {},
+  } = {}
 ): FreightService<T> {
   const uris = getFreightServiceURIs<T>(handlerOptions);
   return {
     uris,
-    getShipper(request, options) { // eslint-disable-line @typescript-eslint/no-unused-vars
+    getShipper(request, options) {
+      // eslint-disable-line @typescript-eslint/no-unused-vars
       const uri = uris.getGetShipperURI(request, options);
       const body = null;
-      return handler({
-        path: uri,
-        method: "GET",
-        body,
-        ...(options as T),
-      }, {
-        service: "FreightService",
-        method: "GetShipper",
-      }) as Promise<Shipper>;
+      return handler(
+        {
+          path: uri,
+          method: 'GET',
+          body,
+          ...(options as T),
+        },
+        {
+          service: 'FreightService',
+          method: 'GetShipper',
+        }
+      ) as Promise<Shipper>;
     },
-    listShippers(request, options) { // eslint-disable-line @typescript-eslint/no-unused-vars
+    listShippers(request, options) {
+      // eslint-disable-line @typescript-eslint/no-unused-vars
       const uri = uris.getListShippersURI(request, options);
       const body = null;
-      return handler({
-        path: uri,
-        method: "GET",
-        body,
-        ...(options as T),
-      }, {
-        service: "FreightService",
-        method: "ListShippers",
-      }) as Promise<ListShippersResponse>;
+      return handler(
+        {
+          path: uri,
+          method: 'GET',
+          body,
+          ...(options as T),
+        },
+        {
+          service: 'FreightService',
+          method: 'ListShippers',
+        }
+      ) as Promise<ListShippersResponse>;
     },
-    createShipper(request, options) { // eslint-disable-line @typescript-eslint/no-unused-vars
+    createShipper(request, options) {
+      // eslint-disable-line @typescript-eslint/no-unused-vars
       const uri = uris.getCreateShipperURI(request, options);
       const body = request?.shipper ?? {};
-      return handler({
-        path: uri,
-        method: "POST",
-        body,
-        ...(options as T),
-      }, {
-        service: "FreightService",
-        method: "CreateShipper",
-      }) as Promise<Shipper>;
+      return handler(
+        {
+          path: uri,
+          method: 'POST',
+          body,
+          ...(options as T),
+        },
+        {
+          service: 'FreightService',
+          method: 'CreateShipper',
+        }
+      ) as Promise<Shipper>;
     },
-    updateShipper(request, options) { // eslint-disable-line @typescript-eslint/no-unused-vars
+    updateShipper(request, options) {
+      // eslint-disable-line @typescript-eslint/no-unused-vars
       const uri = uris.getUpdateShipperURI(request, options);
       const body = request?.shipper ?? {};
-      return handler({
-        path: uri,
-        method: "PATCH",
-        body,
-        ...(options as T),
-      }, {
-        service: "FreightService",
-        method: "UpdateShipper",
-      }) as Promise<Shipper>;
+      return handler(
+        {
+          path: uri,
+          method: 'PATCH',
+          body,
+          ...(options as T),
+        },
+        {
+          service: 'FreightService',
+          method: 'UpdateShipper',
+        }
+      ) as Promise<Shipper>;
     },
-    deleteShipper(request, options) { // eslint-disable-line @typescript-eslint/no-unused-vars
+    deleteShipper(request, options) {
+      // eslint-disable-line @typescript-eslint/no-unused-vars
       const uri = uris.getDeleteShipperURI(request, options);
       const body = null;
-      return handler({
-        path: uri,
-        method: "DELETE",
-        body,
-        ...(options as T),
-      }, {
-        service: "FreightService",
-        method: "DeleteShipper",
-      }) as Promise<Shipper>;
+      return handler(
+        {
+          path: uri,
+          method: 'DELETE',
+          body,
+          ...(options as T),
+        },
+        {
+          service: 'FreightService',
+          method: 'DeleteShipper',
+        }
+      ) as Promise<Shipper>;
     },
-    getSite(request, options) { // eslint-disable-line @typescript-eslint/no-unused-vars
+    getSite(request, options) {
+      // eslint-disable-line @typescript-eslint/no-unused-vars
       const uri = uris.getGetSiteURI(request, options);
       const body = null;
-      return handler({
-        path: uri,
-        method: "GET",
-        body,
-        ...(options as T),
-      }, {
-        service: "FreightService",
-        method: "GetSite",
-      }) as Promise<Site>;
+      return handler(
+        {
+          path: uri,
+          method: 'GET',
+          body,
+          ...(options as T),
+        },
+        {
+          service: 'FreightService',
+          method: 'GetSite',
+        }
+      ) as Promise<Site>;
     },
-    listSites(request, options) { // eslint-disable-line @typescript-eslint/no-unused-vars
+    listSites(request, options) {
+      // eslint-disable-line @typescript-eslint/no-unused-vars
       const uri = uris.getListSitesURI(request, options);
       const body = null;
-      return handler({
-        path: uri,
-        method: "GET",
-        body,
-        ...(options as T),
-      }, {
-        service: "FreightService",
-        method: "ListSites",
-      }) as Promise<ListSitesResponse>;
+      return handler(
+        {
+          path: uri,
+          method: 'GET',
+          body,
+          ...(options as T),
+        },
+        {
+          service: 'FreightService',
+          method: 'ListSites',
+        }
+      ) as Promise<ListSitesResponse>;
     },
-    createSite(request, options) { // eslint-disable-line @typescript-eslint/no-unused-vars
+    createSite(request, options) {
+      // eslint-disable-line @typescript-eslint/no-unused-vars
       const uri = uris.getCreateSiteURI(request, options);
       const body = request?.site ?? {};
-      return handler({
-        path: uri,
-        method: "POST",
-        body,
-        ...(options as T),
-      }, {
-        service: "FreightService",
-        method: "CreateSite",
-      }) as Promise<Site>;
+      return handler(
+        {
+          path: uri,
+          method: 'POST',
+          body,
+          ...(options as T),
+        },
+        {
+          service: 'FreightService',
+          method: 'CreateSite',
+        }
+      ) as Promise<Site>;
     },
-    updateSite(request, options) { // eslint-disable-line @typescript-eslint/no-unused-vars
+    updateSite(request, options) {
+      // eslint-disable-line @typescript-eslint/no-unused-vars
       const uri = uris.getUpdateSiteURI(request, options);
       const body = request?.site ?? {};
-      return handler({
-        path: uri,
-        method: "PATCH",
-        body,
-        ...(options as T),
-      }, {
-        service: "FreightService",
-        method: "UpdateSite",
-      }) as Promise<Site>;
+      return handler(
+        {
+          path: uri,
+          method: 'PATCH',
+          body,
+          ...(options as T),
+        },
+        {
+          service: 'FreightService',
+          method: 'UpdateSite',
+        }
+      ) as Promise<Site>;
     },
-    deleteSite(request, options) { // eslint-disable-line @typescript-eslint/no-unused-vars
+    deleteSite(request, options) {
+      // eslint-disable-line @typescript-eslint/no-unused-vars
       const uri = uris.getDeleteSiteURI(request, options);
       const body = null;
-      return handler({
-        path: uri,
-        method: "DELETE",
-        body,
-        ...(options as T),
-      }, {
-        service: "FreightService",
-        method: "DeleteSite",
-      }) as Promise<Site>;
+      return handler(
+        {
+          path: uri,
+          method: 'DELETE',
+          body,
+          ...(options as T),
+        },
+        {
+          service: 'FreightService',
+          method: 'DeleteSite',
+        }
+      ) as Promise<Site>;
     },
-    getShipment(request, options) { // eslint-disable-line @typescript-eslint/no-unused-vars
+    getShipment(request, options) {
+      // eslint-disable-line @typescript-eslint/no-unused-vars
       const uri = uris.getGetShipmentURI(request, options);
       const body = null;
-      return handler({
-        path: uri,
-        method: "GET",
-        body,
-        ...(options as T),
-      }, {
-        service: "FreightService",
-        method: "GetShipment",
-      }) as Promise<Shipment>;
+      return handler(
+        {
+          path: uri,
+          method: 'GET',
+          body,
+          ...(options as T),
+        },
+        {
+          service: 'FreightService',
+          method: 'GetShipment',
+        }
+      ) as Promise<Shipment>;
     },
-    listShipments(request, options) { // eslint-disable-line @typescript-eslint/no-unused-vars
+    listShipments(request, options) {
+      // eslint-disable-line @typescript-eslint/no-unused-vars
       const uri = uris.getListShipmentsURI(request, options);
       const body = null;
-      return handler({
-        path: uri,
-        method: "GET",
-        body,
-        ...(options as T),
-      }, {
-        service: "FreightService",
-        method: "ListShipments",
-      }) as Promise<ListShipmentsResponse>;
+      return handler(
+        {
+          path: uri,
+          method: 'GET',
+          body,
+          ...(options as T),
+        },
+        {
+          service: 'FreightService',
+          method: 'ListShipments',
+        }
+      ) as Promise<ListShipmentsResponse>;
     },
-    createShipment(request, options) { // eslint-disable-line @typescript-eslint/no-unused-vars
+    createShipment(request, options) {
+      // eslint-disable-line @typescript-eslint/no-unused-vars
       const uri = uris.getCreateShipmentURI(request, options);
       const body = request?.shipment ?? {};
-      return handler({
-        path: uri,
-        method: "POST",
-        body,
-        ...(options as T),
-      }, {
-        service: "FreightService",
-        method: "CreateShipment",
-      }) as Promise<Shipment>;
+      return handler(
+        {
+          path: uri,
+          method: 'POST',
+          body,
+          ...(options as T),
+        },
+        {
+          service: 'FreightService',
+          method: 'CreateShipment',
+        }
+      ) as Promise<Shipment>;
     },
-    updateShipment(request, options) { // eslint-disable-line @typescript-eslint/no-unused-vars
+    updateShipment(request, options) {
+      // eslint-disable-line @typescript-eslint/no-unused-vars
       const uri = uris.getUpdateShipmentURI(request, options);
       const body = request?.shipment ?? {};
-      return handler({
-        path: uri,
-        method: "PATCH",
-        body,
-        ...(options as T),
-      }, {
-        service: "FreightService",
-        method: "UpdateShipment",
-      }) as Promise<Shipment>;
+      return handler(
+        {
+          path: uri,
+          method: 'PATCH',
+          body,
+          ...(options as T),
+        },
+        {
+          service: 'FreightService',
+          method: 'UpdateShipment',
+        }
+      ) as Promise<Shipment>;
     },
-    deleteShipment(request, options) { // eslint-disable-line @typescript-eslint/no-unused-vars
+    deleteShipment(request, options) {
+      // eslint-disable-line @typescript-eslint/no-unused-vars
       const uri = uris.getDeleteShipmentURI(request, options);
       const body = null;
-      return handler({
-        path: uri,
-        method: "DELETE",
-        body,
-        ...(options as T),
-      }, {
-        service: "FreightService",
-        method: "DeleteShipment",
-      }) as Promise<Shipment>;
+      return handler(
+        {
+          path: uri,
+          method: 'DELETE',
+          body,
+          ...(options as T),
+        },
+        {
+          service: 'FreightService',
+          method: 'DeleteShipment',
+        }
+      ) as Promise<Shipment>;
     },
-    getShipperById(request, options) { // eslint-disable-line @typescript-eslint/no-unused-vars
+    getShipperById(request, options) {
+      // eslint-disable-line @typescript-eslint/no-unused-vars
       const uri = uris.getGetShipperByIdURI(request, options);
       const body = null;
-      return handler({
-        path: uri,
-        method: "GET",
-        body,
-        ...(options as T),
-      }, {
-        service: "FreightService",
-        method: "GetShipperById",
-      }) as Promise<Shipper>;
+      return handler(
+        {
+          path: uri,
+          method: 'GET',
+          body,
+          ...(options as T),
+        },
+        {
+          service: 'FreightService',
+          method: 'GetShipperById',
+        }
+      ) as Promise<Shipper>;
     },
-    getShipmentBySlug(request, options) { // eslint-disable-line @typescript-eslint/no-unused-vars
+    getShipmentBySlug(request, options) {
+      // eslint-disable-line @typescript-eslint/no-unused-vars
       const uri = uris.getGetShipmentBySlugURI(request, options);
       const body = null;
-      return handler({
-        path: uri,
-        method: "GET",
-        body,
-        ...(options as T),
-      }, {
-        service: "FreightService",
-        method: "GetShipmentBySlug",
-      }) as Promise<Shipment>;
+      return handler(
+        {
+          path: uri,
+          method: 'GET',
+          body,
+          ...(options as T),
+        },
+        {
+          service: 'FreightService',
+          method: 'GetShipmentBySlug',
+        }
+      ) as Promise<Shipment>;
     },
-    getSiteByShipperId(request, options) { // eslint-disable-line @typescript-eslint/no-unused-vars
+    getSiteByShipperId(request, options) {
+      // eslint-disable-line @typescript-eslint/no-unused-vars
       const uri = uris.getGetSiteByShipperIdURI(request, options);
       const body = null;
-      return handler({
-        path: uri,
-        method: "GET",
-        body,
-        ...(options as T),
-      }, {
-        service: "FreightService",
-        method: "GetSiteByShipperId",
-      }) as Promise<Site>;
+      return handler(
+        {
+          path: uri,
+          method: 'GET',
+          body,
+          ...(options as T),
+        },
+        {
+          service: 'FreightService',
+          method: 'GetSiteByShipperId',
+        }
+      ) as Promise<Site>;
     },
   };
 }

@@ -21,5 +21,4 @@ export type Demo = {
   details: DemoDetail[];
 };
 
-
 // @@protoc_insertion_point(typescript-http-eof)

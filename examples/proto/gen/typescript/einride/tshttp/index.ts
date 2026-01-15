@@ -2,5 +2,4 @@
 /* eslint-disable camelcase */
 // @ts-nocheck
 
-
 // @@protoc_insertion_point(typescript-http-eof)

@@ -395,7 +395,7 @@ export type Message = {
 // Otherwise, the value will be converted into a JSON object,
 // and the "@type" field will be inserted to indicate the actual data type.
 interface wellKnownAny {
-  "@type": string;
+  '@type': string;
   [key: string]: unknown;
 }
 
@@ -526,12 +526,11 @@ export interface SyntaxService<T = unknown> {
 
 export function getSyntaxServiceURIs<T = unknown>(
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  handlerOptions: {
-    mapStringify?: (map: Record<string, unknown>) => string;
-  } = {},
+  handlerOptions: { mapStringify?: (map: Record<string, unknown>) => string } = {}
 ): SyntaxServiceURIs<T> {
   return {
-    getQueryOnlyURI(request, options) { // eslint-disable-line @typescript-eslint/no-unused-vars
+    getQueryOnlyURI(request, options) {
+      // eslint-disable-line @typescript-eslint/no-unused-vars
       const path = `v1`; // eslint-disable-line quotes
       const queryParams: string[] = [];
       if (request.string) {
@@ -540,7 +539,7 @@ export function getSyntaxServiceURIs<T = unknown>(
       if (request.repeatedString) {
         request.repeatedString.forEach((x) => {
           queryParams.push(`repeatedString=${encodeURIComponent(x.toString())}`);
-        })
+        });
       }
       if (request.nested?.string) {
         queryParams.push(`nested.string=${encodeURIComponent(request.nested.string.toString())}`);
@@ -548,36 +547,40 @@ export function getSyntaxServiceURIs<T = unknown>(
       if (request.nested?.tags) {
         const nestedTags = handlerOptions?.mapStringify
           ? handlerOptions.mapStringify(request.nested.tags)
-          : Object.entries(request.nested.tags).map((x) => (
-            `${encodeURIComponent(`nested.tags[${x[0]}]`)}=${encodeURIComponent(x[1].toString())}`
-          ));
+          : Object.entries(request.nested.tags).map(
+              (x) =>
+                `${encodeURIComponent(`nested.tags[${x[0]}]`)}=${encodeURIComponent(x[1].toString())}`
+            );
         queryParams.push(nestedTags);
       }
       let uri = path;
       if (queryParams.length > 0) {
-        uri += `?${queryParams.join("&")}`
+        uri += `?${queryParams.join('&')}`;
       }
       return uri;
     },
-    getEmptyVerbURI(request, options) { // eslint-disable-line @typescript-eslint/no-unused-vars
+    getEmptyVerbURI(request, options) {
+      // eslint-disable-line @typescript-eslint/no-unused-vars
       const path = `v1:emptyVerb`; // eslint-disable-line quotes
       const queryParams: string[] = [];
       let uri = path;
       if (queryParams.length > 0) {
-        uri += `?${queryParams.join("&")}`
+        uri += `?${queryParams.join('&')}`;
       }
       return uri;
     },
-    getStarBodyURI(request, options) { // eslint-disable-line @typescript-eslint/no-unused-vars
+    getStarBodyURI(request, options) {
+      // eslint-disable-line @typescript-eslint/no-unused-vars
       const path = `v1:starBody`; // eslint-disable-line quotes
       const queryParams: string[] = [];
       let uri = path;
       if (queryParams.length > 0) {
-        uri += `?${queryParams.join("&")}`
+        uri += `?${queryParams.join('&')}`;
       }
       return uri;
     },
-    getBodyURI(request, options) { // eslint-disable-line @typescript-eslint/no-unused-vars
+    getBodyURI(request, options) {
+      // eslint-disable-line @typescript-eslint/no-unused-vars
       const path = `v1:body`; // eslint-disable-line quotes
       const queryParams: string[] = [];
       if (request.string) {
@@ -586,24 +589,25 @@ export function getSyntaxServiceURIs<T = unknown>(
       if (request.repeatedString) {
         request.repeatedString.forEach((x) => {
           queryParams.push(`repeatedString=${encodeURIComponent(x.toString())}`);
-        })
+        });
       }
       let uri = path;
       if (queryParams.length > 0) {
-        uri += `?${queryParams.join("&")}`
+        uri += `?${queryParams.join('&')}`;
       }
       return uri;
     },
-    getPathURI(request, options) { // eslint-disable-line @typescript-eslint/no-unused-vars
+    getPathURI(request, options) {
+      // eslint-disable-line @typescript-eslint/no-unused-vars
       if (!request.string) {
-        throw new Error("missing required field request.string");
+        throw new Error('missing required field request.string');
       }
       const path = `v1/${request.string}:path`; // eslint-disable-line quotes
       const queryParams: string[] = [];
       if (request.repeatedString) {
         request.repeatedString.forEach((x) => {
           queryParams.push(`repeatedString=${encodeURIComponent(x.toString())}`);
-        })
+        });
       }
       if (request.nested?.string) {
         queryParams.push(`nested.string=${encodeURIComponent(request.nested.string.toString())}`);
@@ -611,31 +615,33 @@ export function getSyntaxServiceURIs<T = unknown>(
       if (request.nested?.tags) {
         const nestedTags = handlerOptions?.mapStringify
           ? handlerOptions.mapStringify(request.nested.tags)
-          : Object.entries(request.nested.tags).map((x) => (
-            `${encodeURIComponent(`nested.tags[${x[0]}]`)}=${encodeURIComponent(x[1].toString())}`
-          ));
+          : Object.entries(request.nested.tags).map(
+              (x) =>
+                `${encodeURIComponent(`nested.tags[${x[0]}]`)}=${encodeURIComponent(x[1].toString())}`
+            );
         queryParams.push(nestedTags);
       }
       let uri = path;
       if (queryParams.length > 0) {
-        uri += `?${queryParams.join("&")}`
+        uri += `?${queryParams.join('&')}`;
       }
       return uri;
     },
-    getPathBodyURI(request, options) { // eslint-disable-line @typescript-eslint/no-unused-vars
+    getPathBodyURI(request, options) {
+      // eslint-disable-line @typescript-eslint/no-unused-vars
       if (!request.string) {
-        throw new Error("missing required field request.string");
+        throw new Error('missing required field request.string');
       }
       const path = `v1/${request.string}:pathBody`; // eslint-disable-line quotes
       const queryParams: string[] = [];
       if (request.repeatedString) {
         request.repeatedString.forEach((x) => {
           queryParams.push(`repeatedString=${encodeURIComponent(x.toString())}`);
-        })
+        });
       }
       let uri = path;
       if (queryParams.length > 0) {
-        uri += `?${queryParams.join("&")}`
+        uri += `?${queryParams.join('&')}`;
       }
       return uri;
     },
@@ -650,7 +656,7 @@ type RequestType<T = Record<string, any> | string | null> = {
 
 type RequestHandler<T = unknown> = (
   request: RequestType & T,
-  meta: { service: string, method: string },
+  meta: { service: string; method: string }
 ) => Promise<unknown>;
 
 export function createSyntaxServiceClient<T = unknown>(
@@ -658,88 +664,112 @@ export function createSyntaxServiceClient<T = unknown>(
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   handlerOptions: {
     mapStringify?: (map: Record<string, unknown>) => string;
-  } = {},
+  } = {}
 ): SyntaxService<T> {
   const uris = getSyntaxServiceURIs<T>(handlerOptions);
   return {
     uris,
-    queryOnly(request, options) { // eslint-disable-line @typescript-eslint/no-unused-vars
+    queryOnly(request, options) {
+      // eslint-disable-line @typescript-eslint/no-unused-vars
       const uri = uris.getQueryOnlyURI(request, options);
       const body = null;
-      return handler({
-        path: uri,
-        method: "GET",
-        body,
-        ...(options as T),
-      }, {
-        service: "SyntaxService",
-        method: "QueryOnly",
-      }) as Promise<Message>;
+      return handler(
+        {
+          path: uri,
+          method: 'GET',
+          body,
+          ...(options as T),
+        },
+        {
+          service: 'SyntaxService',
+          method: 'QueryOnly',
+        }
+      ) as Promise<Message>;
     },
-    emptyVerb(request, options) { // eslint-disable-line @typescript-eslint/no-unused-vars
+    emptyVerb(request, options) {
+      // eslint-disable-line @typescript-eslint/no-unused-vars
       const uri = uris.getEmptyVerbURI(request, options);
       const body = null;
-      return handler({
-        path: uri,
-        method: "GET",
-        body,
-        ...(options as T),
-      }, {
-        service: "SyntaxService",
-        method: "EmptyVerb",
-      }) as Promise<wellKnownEmpty>;
+      return handler(
+        {
+          path: uri,
+          method: 'GET',
+          body,
+          ...(options as T),
+        },
+        {
+          service: 'SyntaxService',
+          method: 'EmptyVerb',
+        }
+      ) as Promise<wellKnownEmpty>;
     },
-    starBody(request, options) { // eslint-disable-line @typescript-eslint/no-unused-vars
+    starBody(request, options) {
+      // eslint-disable-line @typescript-eslint/no-unused-vars
       const uri = uris.getStarBodyURI(request, options);
       const body = request;
-      return handler({
-        path: uri,
-        method: "POST",
-        body,
-        ...(options as T),
-      }, {
-        service: "SyntaxService",
-        method: "StarBody",
-      }) as Promise<Message>;
+      return handler(
+        {
+          path: uri,
+          method: 'POST',
+          body,
+          ...(options as T),
+        },
+        {
+          service: 'SyntaxService',
+          method: 'StarBody',
+        }
+      ) as Promise<Message>;
     },
-    body(request, options) { // eslint-disable-line @typescript-eslint/no-unused-vars
+    body(request, options) {
+      // eslint-disable-line @typescript-eslint/no-unused-vars
       const uri = uris.getBodyURI(request, options);
       const body = request?.nested ?? {};
-      return handler({
-        path: uri,
-        method: "POST",
-        body,
-        ...(options as T),
-      }, {
-        service: "SyntaxService",
-        method: "Body",
-      }) as Promise<Message>;
+      return handler(
+        {
+          path: uri,
+          method: 'POST',
+          body,
+          ...(options as T),
+        },
+        {
+          service: 'SyntaxService',
+          method: 'Body',
+        }
+      ) as Promise<Message>;
     },
-    path(request, options) { // eslint-disable-line @typescript-eslint/no-unused-vars
+    path(request, options) {
+      // eslint-disable-line @typescript-eslint/no-unused-vars
       const uri = uris.getPathURI(request, options);
       const body = null;
-      return handler({
-        path: uri,
-        method: "POST",
-        body,
-        ...(options as T),
-      }, {
-        service: "SyntaxService",
-        method: "Path",
-      }) as Promise<Message>;
+      return handler(
+        {
+          path: uri,
+          method: 'POST',
+          body,
+          ...(options as T),
+        },
+        {
+          service: 'SyntaxService',
+          method: 'Path',
+        }
+      ) as Promise<Message>;
     },
-    pathBody(request, options) { // eslint-disable-line @typescript-eslint/no-unused-vars
+    pathBody(request, options) {
+      // eslint-disable-line @typescript-eslint/no-unused-vars
       const uri = uris.getPathBodyURI(request, options);
       const body = request?.nested ?? {};
-      return handler({
-        path: uri,
-        method: "POST",
-        body,
-        ...(options as T),
-      }, {
-        service: "SyntaxService",
-        method: "PathBody",
-      }) as Promise<Message>;
+      return handler(
+        {
+          path: uri,
+          method: 'POST',
+          body,
+          ...(options as T),
+        },
+        {
+          service: 'SyntaxService',
+          method: 'PathBody',
+        }
+      ) as Promise<Message>;
     },
   };
 }
